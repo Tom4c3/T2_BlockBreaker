@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>T2_BlockBreaker</title>
     <style>
         canvas {
@@ -52,21 +53,59 @@
         document.addEventListener("keydown", keyDownHandler, false);
         document.addEventListener("keyup", keyUpHandler, false);
 
-        function keyDownHandler(e) {
-        if (e.key == "Right" || e.key == "ArrowRight") {
-        rightPressed = true;
-        } else if (e.key == "Left" || e.key == "ArrowLeft") {
-        leftPressed = true;
-        }
+        document.addEventListener("touchstart", touchStartHandler, false);
+        document.addEventListener("touchmove", touchMoveHandler, false);
+        document.addEventListener("touchend", touchEndHandler, false);
+
+                // タッチ開始時の座標を保存する変数
+        let touchStartX = 0;
+
+        // タッチ開始時のイベントハンドラ
+        function touchStartHandler(e) {
+          e.preventDefault();
+          touchStartX = e.touches[0].clientX;
         }
 
-        function keyUpHandler(e) {
-        if (e.key == "Right" || e.key == "ArrowRight") {
+        // タッチ中のイベントハンドラ
+        function touchMoveHandler(e) {
+          e.preventDefault();
+          let touchCurrentX = e.touches[0].clientX;
+          let diffX = touchCurrentX - touchStartX;
+
+          paddleX += diffX;
+
+          // パドルがキャンバスの外に出ないようにする
+          if (paddleX < 0) {
+            paddleX = 0;
+          } else if (paddleX + paddleWidth > canvas.width) {
+            paddleX = canvas.width - paddleWidth;
+          }
+
+          touchStartX = touchCurrentX;
+        }
+
+        // タッチ終了時のイベントハンドラ
+        function touchEndHandler(e) {
+          e.preventDefault();
+        }
+
+        function keyDownHandler(e) {
+    if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d" || e.key == "D") {
+        rightPressed = true;
+    } else if (e.key == "Left" || e.key == "ArrowLeft" || e.key == "a" || e.key == "A") {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d" || e.key == "D") {
         rightPressed = false;
-        } else if (e.key == "Left" || e.key == "ArrowLeft") {
+    } else if (e.key == "Left" || e.key == "ArrowLeft" || e.key == "a" || e.key == "A") {
         leftPressed = false;
-        }
-        }
+    }
+}
+
+
 
         function drawBall() {
         ctx.drawImage(ballImg, x, y, 30, 30);
