@@ -12,8 +12,22 @@
             border: 1px solid #000;
         }
     </style>
+
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
+    <script>
+        document.body.addEventListener('touchmove', function (event) {
+        event.preventDefault();
+        }, { passive: false });
+    </script>
     <canvas id="gameCanvas" width="480" height="320"></canvas>
     <img id="ballImg" src="https://avatars.githubusercontent.com/u/43462743?s=400&u=60311dd646c39ce33428cc782ac13c5ebb31fb33&v=4" style="display:none;" />
     <script>
@@ -57,53 +71,53 @@
         document.addEventListener("touchmove", touchMoveHandler, false);
         document.addEventListener("touchend", touchEndHandler, false);
 
-                // タッチ開始時の座標を保存する変数
+        // タッチ開始時の座標を保存する変数
         let touchStartX = 0;
 
         // タッチ開始時のイベントハンドラ
         function touchStartHandler(e) {
-          e.preventDefault();
-          touchStartX = e.touches[0].clientX;
+        e.preventDefault();
+        touchStartX = e.touches[0].clientX;
         }
 
         // タッチ中のイベントハンドラ
         function touchMoveHandler(e) {
-          e.preventDefault();
-          let touchCurrentX = e.touches[0].clientX;
-          let diffX = touchCurrentX - touchStartX;
+        e.preventDefault();
+        let touchCurrentX = e.touches[0].clientX;
+        let diffX = touchCurrentX - touchStartX;
 
-          paddleX += diffX;
+        paddleX += diffX;
 
-          // パドルがキャンバスの外に出ないようにする
-          if (paddleX < 0) {
-            paddleX = 0;
-          } else if (paddleX + paddleWidth > canvas.width) {
-            paddleX = canvas.width - paddleWidth;
-          }
+        // パドルがキャンバスの外に出ないようにする
+        if (paddleX < 0) {
+        paddleX = 0;
+        } else if (paddleX + paddleWidth > canvas.width) {
+        paddleX = canvas.width - paddleWidth;
+        }
 
-          touchStartX = touchCurrentX;
+        touchStartX = touchCurrentX;
         }
 
         // タッチ終了時のイベントハンドラ
         function touchEndHandler(e) {
-          e.preventDefault();
+        e.preventDefault();
         }
 
         function keyDownHandler(e) {
-    if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d" || e.key == "D") {
+        if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d" || e.key == "D") {
         rightPressed = true;
-    } else if (e.key == "Left" || e.key == "ArrowLeft" || e.key == "a" || e.key == "A") {
+        } else if (e.key == "Left" || e.key == "ArrowLeft" || e.key == "a" || e.key == "A") {
         leftPressed = true;
-    }
-}
+        }
+        }
 
-function keyUpHandler(e) {
-    if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d" || e.key == "D") {
+        function keyUpHandler(e) {
+        if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d" || e.key == "D") {
         rightPressed = false;
-    } else if (e.key == "Left" || e.key == "ArrowLeft" || e.key == "a" || e.key == "A") {
+        } else if (e.key == "Left" || e.key == "ArrowLeft" || e.key == "a" || e.key == "A") {
         leftPressed = false;
-    }
-}
+        }
+        }
 
 
 
@@ -143,11 +157,11 @@ function keyUpHandler(e) {
         const brick = bricks[c][r];
         if (brick.status === 1) {
         const hitPadding = 5;
-        
+
         if (x > brick.x - hitPadding && x < brick.x + brickWidth + hitPadding && y > brick.y - hitPadding && y < brick.y + brickHeight + hitPadding) {
-          dy = -dy;
-          brick.status = 0;
-         destroyedBricks++;
+        dy = -dy;
+        brick.status = 0;
+        destroyedBricks++;
         }
         }
         }
@@ -168,20 +182,20 @@ function keyUpHandler(e) {
         if (y + dy < 10) {
         dy = -dy;
         } else if (y + dy > canvas.height - 30) {
-  if (x > paddleX - 15 && x < paddleX + paddleWidth + 15) {
-    dy = -dy;
-  } else {
+        if (x > paddleX - 15 && x < paddleX + paddleWidth + 15) {
+        dy = -dy;
+        } else {
         alert("Gameover!");
         document.location.reload();
         clearInterval(interval);
         }
         }
 
-          if (destroyedBricks === totalBricks) {
-    alert("Game cleared! Congratulations!");
-    document.location.reload();
-    clearInterval(interval);
-  }
+        if (destroyedBricks === totalBricks) {
+        alert("Game cleared! Congratulations!");
+        document.location.reload();
+        clearInterval(interval);
+        }
 
         if (rightPressed && paddleX < canvas.width - paddleWidth) {
         paddleX += 7;
@@ -198,4 +212,5 @@ function keyUpHandler(e) {
         const interval = setInterval(draw, 10);
     </script>
 </body>
+
 </html>
