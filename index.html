@@ -156,7 +156,7 @@
         for (let r = 0; r < brickRowCount; r++) {
         const brick = bricks[c][r];
         if (brick.status === 1) {
-        const hitPadding = 5;
+        const hitPadding = 1;
 
         if (x > brick.x - hitPadding && x < brick.x + brickWidth + hitPadding && y > brick.y - hitPadding && y < brick.y + brickHeight + hitPadding) {
         dy = -dy;
